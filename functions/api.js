@@ -2,12 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('cross-fetch');
 
+const serverless = require('serverless-http');
 const app = express();
+const router = express.Router();
 const port = process.env.PORT  || 3000;
 app.use(cors());
 
+router.get('/', (req, res) => {
+  res.send('App is running..');
+});
+
 // Api to get restraunts
-app.get('/api/restaurants', (req, res) => {
+router.get('/restaurants', (req, res) => {
   
   const url = `https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0614369&lng=80.2408444&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
 
@@ -36,7 +42,7 @@ app.get('/api/restaurants', (req, res) => {
 
 
 // API to get restrauntMenu
-app.get('/api/restaurantMenu/:id', (req, res) => {
+router.get('/restaurantMenu/:id', (req, res) => {
   const {id} = req.params
   console.log(id)
   const url = `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=13.061436790959643&lng=80.24084452539682&restaurantId=${id}&catalog_qa=undefined&submitAction=ENTER`;
@@ -66,7 +72,7 @@ app.get('/api/restaurantMenu/:id', (req, res) => {
 
 
 // API to Search retaurants
-app.get('/api/search/:id', (req, res) => {
+router.get('/search/:id', (req, res) => {
   const {id} = req.params
   console.log(id)
   const url = `https://www.swiggy.com/dapi/restaurants/search/suggest?lat=13.061436790959643&lng=80.24084452539682&trackingId=undefined&str=${id}`;
@@ -94,6 +100,5 @@ app.get('/api/search/:id', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`Server is listening on port ${port}`);
-  });
+app.use('/.netlify/functions/api', router);
+module.exports.handler = serverless(app);

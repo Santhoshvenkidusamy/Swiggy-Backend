@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/netlify deploy --prod"
+    "build": "netlify deploy --prod"
   },
   "author": "",
   "license": "ISC",
@@ -12,9 +12,8 @@
     "cors": "^2.8.5",
     "cross-fetch": "^4.0.0",
     "express": "^4.19.2",
+    "netlify-lambda": "^2.0.16",
+    "netlify-cli": "^17.23.8",
     "serverless-http": "^3.2.0"
-  },
-  "devDependencies": {
-    "netlify-cli": "^17.23.8"
   }
 }
